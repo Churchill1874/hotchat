@@ -16,6 +16,7 @@ public class InitConfig {
     private static final int SUPER_ADMIN_ACCOUNT = 5000;
 
     private static final String PASSWORD = "111111a";
+
     @Autowired
     private UserService userService;
 
