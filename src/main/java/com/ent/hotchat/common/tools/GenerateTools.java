@@ -1,7 +1,6 @@
 package com.ent.hotchat.common.tools;
 
 import cn.hutool.core.util.RandomUtil;
-import com.ent.hotchat.common.constant.enums.LogTypeEnum;
 import com.ent.hotchat.entity.UserInfo;
 import com.ent.hotchat.pojo.vo.Token;
 

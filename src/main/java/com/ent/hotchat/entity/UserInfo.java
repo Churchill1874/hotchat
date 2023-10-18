@@ -2,7 +2,7 @@ package com.ent.hotchat.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.ent.hotchat.common.constant.enums.UserStatusEnum;
+import com.ent.hotchat.common.constant.enums.StatusEnum;
 import com.ent.hotchat.config.BigDecimalSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -58,7 +58,7 @@ public class UserInfo extends BaseInfo implements Serializable {
 
     @TableField("status")
     @ApiModelProperty("状态 1正常 0禁用")
-    private UserStatusEnum status;
+    private StatusEnum status;
 
     @TableField("avatar_path")
     @ApiModelProperty("头像")

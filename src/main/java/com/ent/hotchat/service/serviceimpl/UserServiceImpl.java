@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ent.hotchat.common.constant.enums.UserStatusEnum;
+import com.ent.hotchat.common.constant.enums.StatusEnum;
 import com.ent.hotchat.entity.UserInfo;
 import com.ent.hotchat.mapper.UserMapper;
 import com.ent.hotchat.service.UserService;
@@ -29,7 +29,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserInfo> implement
     @Transactional(rollbackFor = Exception.class)
     public boolean add(UserInfo po) {
         po.setCreateTime(LocalDateTime.now());
-        po.setStatus(UserStatusEnum.NORMAL);
+        po.setStatus(StatusEnum.NORMAL);
         return this.save(po);
     }
 

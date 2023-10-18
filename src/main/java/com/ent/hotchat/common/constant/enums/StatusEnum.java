@@ -7,7 +7,7 @@ import lombok.Getter;
 /**
  * 用户状态枚举
  */
-public enum UserStatusEnum {
+public enum StatusEnum {
 
     DISABLE("禁用",0),
     NORMAL("正常",1);
@@ -20,7 +20,7 @@ public enum UserStatusEnum {
     @EnumValue
     private Integer code;
 
-    UserStatusEnum(String name,Integer code){
+    StatusEnum(String name, Integer code){
         this.name = name;
         this.code = code;
     }

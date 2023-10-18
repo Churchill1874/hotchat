@@ -3,8 +3,7 @@ package com.ent.hotchat.controller.player;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.api.R;
-import com.ent.hotchat.common.constant.enums.LogTypeEnum;
-import com.ent.hotchat.common.constant.enums.UserStatusEnum;
+import com.ent.hotchat.common.constant.enums.StatusEnum;
 import com.ent.hotchat.common.exception.AccountOrPasswordException;
 import com.ent.hotchat.common.exception.DataException;
 import com.ent.hotchat.common.tools.CodeTools;
@@ -82,7 +81,7 @@ public class WebsiteApi {
         userInfo.setLevel(1);
         userInfo.setName(req.getName());
         userInfo.setAddress(HttpTools.getAddress());
-        userInfo.setStatus(UserStatusEnum.NORMAL);
+        userInfo.setStatus(StatusEnum.NORMAL);
         userInfo.setCreateTime(LocalDateTime.now());
         userService.add(userInfo);
 

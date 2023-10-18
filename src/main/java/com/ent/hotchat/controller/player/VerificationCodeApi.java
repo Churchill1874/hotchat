@@ -1,7 +1,6 @@
 package com.ent.hotchat.controller.player;
 
 import com.baomidou.mybatisplus.extension.api.R;
-import com.ent.hotchat.common.constant.enums.LogTypeEnum;
 import com.ent.hotchat.common.tools.GenerateTools;
 import com.ent.hotchat.common.tools.HttpTools;
 import com.ent.hotchat.service.EhcacheService;

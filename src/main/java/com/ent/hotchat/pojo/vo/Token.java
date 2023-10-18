@@ -1,6 +1,6 @@
 package com.ent.hotchat.pojo.vo;
 
-import com.ent.hotchat.common.constant.enums.UserStatusEnum;
+import com.ent.hotchat.common.constant.enums.StatusEnum;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -36,7 +36,7 @@ public class Token {
     /**
      * 状态 0禁用 1正常
      */
-    private UserStatusEnum status;
+    private StatusEnum status;
 
 
 }
