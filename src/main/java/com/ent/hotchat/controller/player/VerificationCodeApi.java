@@ -21,8 +21,6 @@ public class VerificationCodeApi {
     @Autowired
     private EhcacheService ehcacheService;
 
-    @Autowired
-    private LogRecordService logRecordService;
 
     @PostMapping("/get")
     @ApiOperation(value = "获取验证码", notes = "获取验证码")
@@ -32,7 +30,6 @@ public class VerificationCodeApi {
         //获取验证码
         String verificationCode = GenerateTools.getVerificationCode();
         ehcacheService.getVerificationCodeCache().put(HttpTools.getIp(), verificationCode);
-        logRecordService.insert(GenerateTools.createLog(LogTypeEnum.OPERATION,"获取验证码"));
         return R.ok(verificationCode);
     }
 

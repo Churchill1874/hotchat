@@ -1,6 +1,5 @@
 package com.ent.hotchat.config;
 
-import com.ent.hotchat.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,8 +16,6 @@ public class InitConfig {
 
     private static final String PASSWORD = "111111a";
 
-    @Autowired
-    private UserService userService;
 
     //获取创建机器人开关
     @Value("${init.create.bot}")
