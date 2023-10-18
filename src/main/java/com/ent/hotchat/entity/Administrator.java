@@ -14,9 +14,9 @@ import java.io.Serializable;
 public class Administrator extends BaseInfo implements Serializable {
     private static final long serialVersionUID = -7719439849954352417L;
 
-    @TableField("role")
+    @TableField("role_type")
     @ApiModelProperty("角色")
-    private RoleEnum role;
+    private RoleEnum roleType;
 
     @TableField("name")
     @ApiModelProperty("名字")
