@@ -5,7 +5,6 @@ import com.ent.hotchat.common.constant.enums.LogTypeEnum;
 import com.ent.hotchat.common.tools.GenerateTools;
 import com.ent.hotchat.common.tools.HttpTools;
 import com.ent.hotchat.service.EhcacheService;
-import com.ent.hotchat.service.LogRecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +22,6 @@ public class VerificationCodeController {
     @Autowired
     private EhcacheService ehcacheService;
 
-    @Autowired
-    private LogRecordService logRecordService;
 
     @PostMapping("/get")
     @ApiOperation(value = "获取验证码", notes = "获取验证码")
@@ -34,7 +31,6 @@ public class VerificationCodeController {
         //获取验证码
         String verificationCode = GenerateTools.getVerificationCode();
         ehcacheService.getVerificationCodeCache().put(HttpTools.getIp(), verificationCode);
-        logRecordService.insert(GenerateTools.createLog(LogTypeEnum.OPERATION, "获取验证码"));
         return R.ok(verificationCode);
     }
 

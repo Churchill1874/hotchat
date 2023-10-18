@@ -2,8 +2,7 @@ package com.ent.hotchat.common.tools;
 
 import cn.hutool.core.util.RandomUtil;
 import com.ent.hotchat.common.constant.enums.LogTypeEnum;
-import com.ent.hotchat.entity.LogRecord;
-import com.ent.hotchat.entity.User;
+import com.ent.hotchat.entity.UserInfo;
 import com.ent.hotchat.pojo.vo.Token;
 
 import java.time.LocalDateTime;
@@ -120,17 +119,17 @@ public class GenerateTools {
     /**
      * 生成token对象
      *
-     * @param user
+     * @param userInfo
      * @return
      */
-    public static Token createToken(User user) {
+    public static Token createToken(UserInfo userInfo) {
         Token token = new Token();
-        token.setName(user.getName());
+        token.setName(userInfo.getName());
         token.setLoginTime(LocalDateTime.now());
-        token.setAccount(user.getAccount());
-        token.setId(user.getId());
-        token.setStatus(user.getStatus());
-        token.setLevel(user.getLevel());
+        token.setAccount(userInfo.getAccount());
+        token.setId(userInfo.getId());
+        token.setStatus(userInfo.getStatus());
+        token.setLevel(userInfo.getLevel());
         return token;
     }
 

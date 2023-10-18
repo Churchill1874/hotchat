@@ -11,14 +11,12 @@ import com.ent.hotchat.common.tools.CodeTools;
 import com.ent.hotchat.common.tools.GenerateTools;
 import com.ent.hotchat.common.tools.HttpTools;
 import com.ent.hotchat.entity.Blacklist;
-import com.ent.hotchat.entity.LogRecord;
-import com.ent.hotchat.entity.User;
+import com.ent.hotchat.entity.UserInfo;
 import com.ent.hotchat.pojo.req.website.LoginPlayerReq;
 import com.ent.hotchat.pojo.req.website.RegisterReq;
 import com.ent.hotchat.pojo.vo.Token;
 import com.ent.hotchat.service.BlacklistService;
 import com.ent.hotchat.service.EhcacheService;
-import com.ent.hotchat.service.LogRecordService;
 import com.ent.hotchat.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -52,17 +50,17 @@ public class WebsiteApi {
     private BlacklistService blacklistService;
     @PostMapping("/register")
     @ApiOperation(value = "注册")
-    public synchronized R<User> register(@RequestBody @Valid RegisterReq req) {
+    public synchronized R<UserInfo> register(@RequestBody @Valid RegisterReq req) {
         //校验图形验证码
         //checkGraphicVerificationCode(req.getVerificationCode());
 
-        User user = userService.findByName(req.getName());
-        if (user != null) {
+        UserInfo userInfo = userService.findByName(req.getName());
+        if (userInfo != null) {
             return R.failed("该用户名已被注册");
         }
 
-        user = userService.findByAccount(req.getAccount());
-        if (user != null) {
+        userInfo = userService.findByAccount(req.getAccount());
+        if (userInfo != null) {
             return R.failed("该账号已经存在");
         }
 
@@ -74,19 +72,19 @@ public class WebsiteApi {
         //checkRegister(10);
 
         //创建用户数据
-        user = new User();
-        BeanUtils.copyProperties(req, user);
+        userInfo = new UserInfo();
+        BeanUtils.copyProperties(req, userInfo);
 
         String passwordReq = CodeTools.md5AndSalt(req.getPassword());
-        user.setAccount(req.getAccount());
-        user.setPassword(passwordReq);
-        user.setBalance(BigDecimal.ZERO);
-        user.setLevel(1);
-        user.setName(req.getName());
-        user.setAddress(HttpTools.getAddress());
-        user.setStatus(UserStatusEnum.NORMAL);
-        user.setCreateTime(LocalDateTime.now());
-        userService.add(user);
+        userInfo.setAccount(req.getAccount());
+        userInfo.setPassword(passwordReq);
+        userInfo.setBalance(BigDecimal.ZERO);
+        userInfo.setLevel(1);
+        userInfo.setName(req.getName());
+        userInfo.setAddress(HttpTools.getAddress());
+        userInfo.setStatus(UserStatusEnum.NORMAL);
+        userInfo.setCreateTime(LocalDateTime.now());
+        userService.add(userInfo);
 
         //记录登录日志
         //logRecordService.insert(GenerateTools.registerLog(user.getName(), user.getAccount()));
@@ -106,17 +104,17 @@ public class WebsiteApi {
         //checkGraphicVerificationCode(req.getVerificationCode());
 
         //判断账号密码是否正确
-        User user = null;
+        UserInfo userInfo = null;
         if (req.getAccount() != null) {
-            user = userService.findByAccount(req.getAccount());
+            userInfo = userService.findByAccount(req.getAccount());
         }
 
-        if (user == null) {
+        if (userInfo == null) {
             throw new AccountOrPasswordException();
         }
 
         //对比登录密码和正确密码
-        String password = user.getPassword();
+        String password = userInfo.getPassword();
         String passwordReq = CodeTools.md5AndSalt(req.getPassword());
 
         //如果填写的登录密码是错误的
@@ -126,11 +124,11 @@ public class WebsiteApi {
 
 
         //如果已经登陆过,删除之前的tokenId和缓存
-        this.checkLoginCache(user.getAccount());
+        this.checkLoginCache(userInfo.getAccount());
 
         //生成token并返回
-        Token token = GenerateTools.createToken(user);
-        String tokenId = GenerateTools.createTokenId(user.getAccount());
+        Token token = GenerateTools.createToken(userInfo);
+        String tokenId = GenerateTools.createTokenId(userInfo.getAccount());
         ehcacheService.getTokenCache().put(tokenId, token);
 
         //删除使用过的验证码缓存

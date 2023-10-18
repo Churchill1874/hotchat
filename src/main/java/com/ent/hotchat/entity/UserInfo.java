@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 @TableName("user")
 @ApiModel("用户")
 @Accessors(chain = true)
-public class User extends BaseInfo implements Serializable {
+public class UserInfo extends BaseInfo implements Serializable {
 
     private static final long serialVersionUID = -2092696757443231064L;
 

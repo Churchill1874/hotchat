@@ -7,11 +7,10 @@ import com.ent.hotchat.common.tools.CodeTools;
 import com.ent.hotchat.common.tools.GenerateTools;
 import com.ent.hotchat.common.tools.HttpTools;
 import com.ent.hotchat.common.tools.TokenTools;
-import com.ent.hotchat.entity.User;
+import com.ent.hotchat.entity.UserInfo;
 import com.ent.hotchat.pojo.req.website.LoginManageReq;
 import com.ent.hotchat.pojo.vo.Token;
 import com.ent.hotchat.service.EhcacheService;
-import com.ent.hotchat.service.LogRecordService;
 import com.ent.hotchat.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -53,13 +52,13 @@ public class WebsiteController {
         }
 
         //判断账号密码是否正确
-        User user = userService.findByAccount(req.getAccount());
-        if (user == null) {
+        UserInfo userInfo = userService.findByAccount(req.getAccount());
+        if (userInfo == null) {
             throw new AccountOrPasswordException();
         }
 
         //对比登录密码和正确密码
-        String password = user.getPassword();
+        String password = userInfo.getPassword();
         String passwordReq = CodeTools.md5AndSalt(req.getPassword());
 
         if (!password.equals(passwordReq)) {
@@ -67,11 +66,11 @@ public class WebsiteController {
         }
 
         //校验是否已经登录,如果已经登陆过删除之前的tokenId和缓存
-        checkLoginCache(user.getAccount());
+        checkLoginCache(userInfo.getAccount());
 
         //生成token并返回
-        Token token = GenerateTools.createToken(user);
-        String tokenId = GenerateTools.createTokenId(user.getAccount());
+        Token token = GenerateTools.createToken(userInfo);
+        String tokenId = GenerateTools.createTokenId(userInfo.getAccount());
         ehcacheService.getTokenCache().put(tokenId, token);
 
         //删除使用过的验证码缓存
@@ -101,7 +100,7 @@ public class WebsiteController {
 
     @PostMapping("/getAllToken")
     @ApiOperation(value = "获取所有登陆人", notes = "获取所有登陆人")
-    public R<List<User>> getAllToken() {
+    public R<List<UserInfo>> getAllToken() {
         net.sf.ehcache.Cache c = (net.sf.ehcache.Cache) ehcacheService.getTokenCache().getNativeCache();
         List<String> list = c.getKeys();
         List<Long> idList = new ArrayList<>();
@@ -117,8 +116,8 @@ public class WebsiteController {
         }
 
         if (!CollectionUtils.isEmpty(idList)) {
-            List<User> userList = (List<User>) userService.listByIds(idList);
-            return R.ok(userList);
+            List<UserInfo> userInfoList = (List<UserInfo>) userService.listByIds(idList);
+            return R.ok(userInfoList);
         }
 
         return R.ok(null);

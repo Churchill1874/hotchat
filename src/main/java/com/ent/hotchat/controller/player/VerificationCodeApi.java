@@ -5,7 +5,6 @@ import com.ent.hotchat.common.constant.enums.LogTypeEnum;
 import com.ent.hotchat.common.tools.GenerateTools;
 import com.ent.hotchat.common.tools.HttpTools;
 import com.ent.hotchat.service.EhcacheService;
-import com.ent.hotchat.service.LogRecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
