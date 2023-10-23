@@ -1,6 +1,6 @@
 package com.ent.hotchat.service.serviceimpl;
 
-import com.ent.hotchat.common.tools.HttpTools;
+import com.ent.hotchat.tools.HttpTools;
 import com.ent.hotchat.entity.Blacklist;
 import com.ent.hotchat.service.BlacklistService;
 import com.ent.hotchat.service.EhcacheService;
@@ -32,7 +32,7 @@ public class EhcacheServiceImpl implements EhcacheService {
     }
 
     @Override
-    public Cache getVerificationCodeCache() {
+    public Cache captchaCache() {
         return cacheManager.getCache("verificationCode");
     }
 
@@ -44,11 +44,6 @@ public class EhcacheServiceImpl implements EhcacheService {
     @Override
     public Cache getBlacklistCache() {
         return cacheManager.getCache("blacklist");
-    }
-
-    @Override
-    public Cache getFootballMatchCache() {
-        return cacheManager.getCache("footballMatch");
     }
 
     @Override

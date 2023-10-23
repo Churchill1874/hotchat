@@ -1,7 +1,7 @@
 package com.ent.hotchat.common.aspect;
 
-import com.ent.hotchat.common.tools.TokenTools;
-import com.ent.hotchat.pojo.vo.Token;
+import com.ent.hotchat.tools.TokenTools;
+import com.ent.hotchat.pojo.manage.vo.Token;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;

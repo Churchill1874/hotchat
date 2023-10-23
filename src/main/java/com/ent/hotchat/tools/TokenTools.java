@@ -1,7 +1,7 @@
-package com.ent.hotchat.common.tools;
+package com.ent.hotchat.tools;
 
 import com.ent.hotchat.common.exception.TokenException;
-import com.ent.hotchat.pojo.vo.Token;
+import com.ent.hotchat.pojo.manage.vo.Token;
 import com.ent.hotchat.service.EhcacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

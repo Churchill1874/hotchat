@@ -1,4 +1,4 @@
-package com.ent.hotchat.common.tools;
+package com.ent.hotchat.tools;
 
 import com.ent.hotchat.common.exception.DataException;
 import org.apache.commons.lang3.StringUtils;
@@ -9,7 +9,7 @@ import org.springframework.util.DigestUtils;
  */
 public class CodeTools {
 
-    private static final String SALT = "fk";
+    private static final String SALT = "hot-chat";
 
     public static String md5AndSalt(String password){
         if (StringUtils.isBlank(password)){

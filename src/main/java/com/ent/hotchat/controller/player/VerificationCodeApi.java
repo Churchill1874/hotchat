@@ -1,8 +1,8 @@
 package com.ent.hotchat.controller.player;
 
 import com.baomidou.mybatisplus.extension.api.R;
-import com.ent.hotchat.common.tools.GenerateTools;
-import com.ent.hotchat.common.tools.HttpTools;
+import com.ent.hotchat.tools.GenerateTools;
+import com.ent.hotchat.tools.HttpTools;
 import com.ent.hotchat.service.EhcacheService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @Api(tags = "验证码")
-@RequestMapping("/player/verificationCode")
+@RequestMapping("/player/captcha")
 public class VerificationCodeApi {
 
     @Autowired
@@ -29,7 +29,7 @@ public class VerificationCodeApi {
         ehcacheService.checkIp3SecondsClick(30,"每3秒超过30次点击验证码");
         //获取验证码
         String verificationCode = GenerateTools.getVerificationCode();
-        ehcacheService.getVerificationCodeCache().put(HttpTools.getIp(), verificationCode);
+        ehcacheService.captchaCache().put(HttpTools.getIp(), verificationCode);
         return R.ok(verificationCode);
     }
 

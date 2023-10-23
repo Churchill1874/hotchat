@@ -22,11 +22,11 @@ public interface EhcacheService {
     Cache get3SecondLockCache();
 
     /**
-     * 获取验证码缓存容器
+     * 获取图形验证码缓存容器
      *
      * @return
      */
-    Cache getVerificationCodeCache();
+    Cache captchaCache();
 
     /**
      * 获取短信缓存容器
@@ -41,13 +41,6 @@ public interface EhcacheService {
      * @return
      */
     Cache getBlacklistCache();
-
-    /**
-     * 获取足球比赛缓存
-     *
-     * @return
-     */
-    Cache getFootballMatchCache();
 
     /**
      * 校验ip 3秒内频繁点击超过指定次数

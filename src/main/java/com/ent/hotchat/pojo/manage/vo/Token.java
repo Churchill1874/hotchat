@@ -1,5 +1,6 @@
-package com.ent.hotchat.pojo.vo;
+package com.ent.hotchat.pojo.manage.vo;
 
+import com.ent.hotchat.common.constant.enums.AdminRoleEnum;
 import com.ent.hotchat.common.constant.enums.StatusEnum;
 import lombok.Data;
 
@@ -29,9 +30,9 @@ public class Token {
     private LocalDateTime loginTime;
 
     /**
-     * 等级
+     * 角色类型
      */
-    private Integer level;
+    private AdminRoleEnum roleType;
 
     /**
      * 状态 0禁用 1正常

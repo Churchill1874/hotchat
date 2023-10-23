@@ -1,5 +1,6 @@
-package com.ent.hotchat.common.tools;
+package com.ent.hotchat.tools;
 
+import com.ent.hotchat.common.constant.SystemConstant;
 import com.ent.hotchat.common.exception.DataException;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.ip2region.core.Ip2regionSearcher;
@@ -82,7 +83,7 @@ public class HttpTools {
      * @return
      */
     public static String getHeaderToken() {
-        return getRequest().getHeader("token_id");
+        return getRequest().getHeader(SystemConstant.TOKEN_ID);
     }
 
     /**

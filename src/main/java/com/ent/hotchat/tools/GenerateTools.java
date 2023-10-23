@@ -1,7 +1,6 @@
-package com.ent.hotchat.common.tools;
+package com.ent.hotchat.tools;
 
 import cn.hutool.core.util.RandomUtil;
-import com.ent.hotchat.pojo.vo.Token;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
