@@ -1,12 +1,12 @@
 package com.ent.hotchat.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ent.hotchat.entity.Administrator;
+import com.ent.hotchat.entity.Administrators;
 
 /**
  * 管理员接口
  */
-public interface AdministratorService extends IService<Administrator> {
+public interface AdministratorService extends IService<Administrators> {
 
     /**
      * 根据账号查询管理员
@@ -14,7 +14,7 @@ public interface AdministratorService extends IService<Administrator> {
      * @param account
      * @return
      */
-    Administrator findByAccount(String account);
+    Administrators findByAccount(String account);
 
     /**
      * 根据名称查找管理员
@@ -22,6 +22,6 @@ public interface AdministratorService extends IService<Administrator> {
      * @param name
      * @return
      */
-    Administrator findByName(String name);
+    Administrators findByName(String name);
 
 }

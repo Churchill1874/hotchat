@@ -7,20 +7,20 @@ import lombok.Getter;
 /**
  * 用户状态枚举
  */
-public enum StatusEnum {
+public enum UserStatusEnum {
 
-    DISABLE("禁用",0),
-    NORMAL("正常",1);
+    DISABLE(0,"禁用"),
+    NORMAL(1,"正常");
+
+    @Getter
+    @EnumValue
+    private int code;
 
     @Getter
     @JsonValue
     private String name;
 
-    @Getter
-    @EnumValue
-    private Integer code;
-
-    StatusEnum(String name, Integer code){
+    UserStatusEnum(int code,String name){
         this.name = name;
         this.code = code;
     }

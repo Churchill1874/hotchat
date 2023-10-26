@@ -1,7 +1,7 @@
 package com.ent.hotchat.pojo.manage.resp.administrator;
 
 import com.ent.hotchat.common.constant.enums.AdminRoleEnum;
-import com.ent.hotchat.entity.Administrator;
+import com.ent.hotchat.entity.Administrators;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -23,7 +23,7 @@ public class LoginResp implements Serializable {
     @ApiModelProperty("token令牌")
     private String tokenId;
 
-    public static LoginResp CreateLoginResp(Administrator ob,String tokenId){
+    public static LoginResp CreateLoginResp(Administrators ob, String tokenId){
         LoginResp loginResp = new LoginResp();
         loginResp.setRoleType(ob.getRoleType());
         loginResp.setName(ob.getName());

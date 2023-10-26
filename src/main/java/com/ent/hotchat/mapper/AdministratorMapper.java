@@ -1,11 +1,11 @@
 package com.ent.hotchat.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ent.hotchat.entity.Administrator;
+import com.ent.hotchat.entity.Administrators;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 @Mapper
 @Repository
-public interface AdministratorMapper extends BaseMapper<Administrator> {
+public interface AdministratorMapper extends BaseMapper<Administrators> {
 }
