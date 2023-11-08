@@ -16,10 +16,8 @@ import com.ent.hotchat.tools.CodeTools;
 import com.ent.hotchat.tools.GenerateTools;
 import com.ent.hotchat.tools.HttpTools;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,7 +51,7 @@ public class AdministratorController {
         //校验图形验证码
         Cache captchaCache = ehcacheService.captchaCache();
         Cache.ValueWrapper valueWrapper = captchaCache.get(HttpTools.getIp());
-        if (valueWrapper == null || !valueWrapper.get().equals(req.getCaptcha())){
+        if (valueWrapper == null || !valueWrapper.get().equals(req.getCaptcha())) {
             throw new DataException("图形验证码错误");
         }
 

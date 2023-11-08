@@ -3,7 +3,7 @@
     <property name="LOG_CHARSET" value="UTF-8" />
     <!--定义日志文件的存储地址-->
     <!--windows系统存在位置-->
-    <property name="LOG_PATH" value="../logs/hotchat/" />
+    <property name="LOG_PATH" value="D:/project/logs/hotchat" />
     <!--linux系统下存放位置-->
     <!--<property name="LOG_PATH" value="/home/java/logs"/>-->
     <!-- 控制台输出 -->
