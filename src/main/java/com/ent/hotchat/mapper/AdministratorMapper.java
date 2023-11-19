@@ -5,7 +5,5 @@ import com.ent.hotchat.entity.Administrators;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
-@Mapper
-@Repository
 public interface AdministratorMapper extends BaseMapper<Administrators> {
 }

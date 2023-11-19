@@ -4,11 +4,11 @@ import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
-public enum ChatProviderStatusEnum {
+public enum PlayerRoleEnum {
 
-    FREE(1,"空闲"),
-    WORKING(2,"忙碌中"),
-    DOWN_LINE(3,"下线");
+    ROBOT(1,"机器人"),
+    NORMAL(2,"普通"),
+    CHAT_PROVIDER(3,"陪聊员");
 
     @Getter
     @EnumValue
@@ -18,7 +18,7 @@ public enum ChatProviderStatusEnum {
     @JsonValue
     private String name;
 
-    ChatProviderStatusEnum(int code,String name){
+    PlayerRoleEnum(int code,String name){
         this.name = name;
         this.code = code;
     }

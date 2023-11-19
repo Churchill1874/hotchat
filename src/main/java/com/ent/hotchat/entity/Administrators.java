@@ -10,8 +10,8 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-@TableName("administrators")
 @ApiModel("管理员")
+@TableName("administrators")
 public class Administrators extends BaseInfo implements Serializable {
     private static final long serialVersionUID = -7719439849954352417L;
 

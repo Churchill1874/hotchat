@@ -8,8 +8,8 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-@TableName("blacklist")
 @ApiModel("黑名单")
+@TableName("blacklist")
 public class Blacklist extends BaseInfo implements Serializable {
 
     private static final long serialVersionUID = -3324921096334389678L;
