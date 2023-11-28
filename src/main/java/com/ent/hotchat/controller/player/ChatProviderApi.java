@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @Api(tags = "陪聊员")
-@RequestMapping("/chatProvider/")
+@RequestMapping("/chatProvider")
 public class ChatProviderApi {
 
     @Autowired
     private ChatProviderService chatProviderService;
 
-    @PostMapping("page")
+    @PostMapping("/page")
     @ApiOperation(value = "分页查询陪聊员", notes = "分页查询陪聊员")
     public R<IPage<ChatProvider>> page(@RequestBody PageReq req) {
         IPage<ChatProvider> iPage = chatProviderService.page(req.getPageNum(), req.getPageSize());

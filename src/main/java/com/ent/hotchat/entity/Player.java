@@ -9,6 +9,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @ApiModel("玩家")
@@ -32,10 +33,6 @@ public class Player extends BaseInfo implements Serializable {
     @ApiModelProperty("余额")
     private BigDecimal balance;
 
-    @TableField("is_chat_provider")
-    @ApiModelProperty("是陪聊员")
-    private Boolean isChatProvider;
-
     @TableField("software")
     @ApiModelProperty("社交软件 用逗号隔开")
     private String software;
@@ -51,5 +48,18 @@ public class Player extends BaseInfo implements Serializable {
     @TableField("phone")
     @ApiModelProperty("手机号")
     private String phone;
+
+    @TableField("last_time")
+    @ApiModelProperty("最后登陆时间")
+    private LocalDateTime lastTime;
+
+    @TableField("last_ip")
+    @ApiModelProperty("最后登录ip")
+    private String lastIp;
+
+    @TableField("last_address")
+    @ApiModelProperty("最后登录地址")
+    private String lastAddress;
+
 
 }
