@@ -3,6 +3,7 @@ package com.ent.hotchat.common.tools;
 import com.ent.hotchat.common.exception.DataException;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.ip2region.core.Ip2regionSearcher;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -59,6 +60,16 @@ public class HttpTools {
     public static HttpServletRequest getRequest() {
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         return servletRequestAttributes.getRequest();
+    }
+
+
+    public static String extractDomainFromRequest() {
+        // 从Host头获取域名
+        String hostHeader = getRequest().getHeader("Host");
+        if (StringUtils.isNotBlank(hostHeader)) {
+            return hostHeader.split(":")[0]; // 去除端口部分
+        }
+        return null;
     }
 
     /**
