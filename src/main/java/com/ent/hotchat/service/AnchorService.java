@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.ent.hotchat.entity.Anchor;
 import com.ent.hotchat.pojo.req.anchor.AnchorAdd;
 import com.ent.hotchat.pojo.req.anchor.AnchorBaseUpdate;
-import com.ent.hotchat.pojo.req.anchor.AnchorOnlineStatusUpdate;
 import com.ent.hotchat.pojo.req.anchor.AnchorPage;
 import com.ent.hotchat.pojo.resp.anchor.AnchorInfoVO;
 
@@ -43,11 +42,6 @@ public interface AnchorService extends IService<Anchor> {
      */
     void baseupdate(AnchorBaseUpdate dto);
 
-    /**
-     * 编辑主播在线状态
-     * @param dto
-     */
-    void onlineStatusUpdate(AnchorOnlineStatusUpdate dto);
 
     /**
      * 根据主播账号查找主播信息

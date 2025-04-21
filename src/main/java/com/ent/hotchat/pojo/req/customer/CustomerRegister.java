@@ -22,6 +22,11 @@ public class CustomerRegister implements Serializable {
     @ApiModelProperty(value = "密码",required = true)
     private String password;
 
+    @NotBlank(message = "确认密码不能为空")
+    @Pattern(regexp = "^[a-zA-Z0-9]{1,20}$", message = "确认密码必须为字母和数字组成的20位字符")
+    @ApiModelProperty(value = "确认密码",required = true)
+    private String confirmPassword;
+
     @NotBlank(message = "昵称不能为空")
     @Length(max = 50,message = "昵称不能超过50个字符")
     @ApiModelProperty(value = "昵称",required = true)

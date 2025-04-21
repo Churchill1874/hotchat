@@ -30,10 +30,11 @@ public class SwaggerConfig {
                 //.globalOperationParameters(setRequestHeaders())
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.ent.hotchat.controller.player"))
+                .apis(RequestHandlerSelectors.basePackage("com.ent.hotchat.controller.client"))
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .paths(PathSelectors.any())
                 .build()
+                //.pathMapping("/api")
                 .globalOperationParameters(getPars())
                 .groupName("前台-客户端接口");
     }
@@ -44,16 +45,17 @@ public class SwaggerConfig {
                 //.globalOperationParameters(setRequestHeaders())
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.ent.hotchat.controller.manage"))
+                .apis(RequestHandlerSelectors.basePackage("com.ent.hotchat.controller.admin"))
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .paths(PathSelectors.any())
                 .build()
+                //.pathMapping("/api")
                 .globalOperationParameters(getPars())
                 .groupName("后台-管理接口");
     }
 
     private ApiInfo apiInfo() {
-        Contact contact = new Contact("hotchat", "http://127.0.0.1:8009/doc.html", "joy1cs1112@gmail.com");
+        Contact contact = new Contact("hotchat", "http://127.0.0.1:8011/doc.html", "joy1cs1112@gmail.com");
         return new ApiInfoBuilder()
                 .title("快聊测试API接口")//标题
                 .description("API接口的描述")//文档接口的描述

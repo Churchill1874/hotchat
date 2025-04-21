@@ -49,6 +49,7 @@ public class InitConfig {
             String salt = GenerateTools.getUUID();
             account.setSalt(salt);
             account.setCreateTime(LocalDateTime.now());
+            account.setCreateName("系统初始化");
             account.setPassword(CodeTools.md5AndSalt(PASSWORD, salt));
             account.setContactType("wechat");
             account.setContact("...");

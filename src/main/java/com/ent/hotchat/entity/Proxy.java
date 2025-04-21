@@ -18,7 +18,5 @@ public class Proxy extends BaseInfo {
     @ApiModelProperty("佣金比例")
     private BigDecimal commissionRate;
 
-    @ApiModelProperty("下属用户总数")
-    private Integer totalUsers;
 
 }

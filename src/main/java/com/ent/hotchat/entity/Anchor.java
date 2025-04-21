@@ -71,7 +71,5 @@ public class Anchor extends BaseInfo {
     @ApiModelProperty("主播在线状态")
     private OnlineStatusEnum onlineStatus;
 
-    @ApiModelProperty("主播总订单数")
-    private Integer totalOrders;
 
 }

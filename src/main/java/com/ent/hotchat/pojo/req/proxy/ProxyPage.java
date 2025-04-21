@@ -14,6 +14,6 @@ public class ProxyPage extends BasePage implements Serializable {
     @ApiModelProperty("用户名")
     private String userName;
 
-    @ApiModelProperty("账号状态")
-    private StatusEnum status;
+    @ApiModelProperty("账号状态，默认传1")
+    private StatusEnum status=StatusEnum.NORMAL;
 }

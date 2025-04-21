@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 public class SystemclientVO implements Serializable {
@@ -21,9 +22,12 @@ public class SystemclientVO implements Serializable {
     @ApiModelProperty("昵称")
     private String nickName;
 
-    @ApiModelProperty("角色")
-    private RoleTypeEnum roleType;
-
     @ApiModelProperty("状态")
     private StatusEnum status;
+
+    @ApiModelProperty("创建时间")
+    private LocalDateTime createTime;
+
+    @ApiModelProperty("创建人")
+    private String createName;
 }

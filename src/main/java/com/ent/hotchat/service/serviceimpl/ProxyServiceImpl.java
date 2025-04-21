@@ -1,9 +1,7 @@
 package com.ent.hotchat.service.serviceimpl;
 
-import cn.hutool.core.bean.BeanUtil;
+
 import cn.hutool.json.JSONUtil;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -41,7 +39,7 @@ public class ProxyServiceImpl extends ServiceImpl<ProxyMapper, Proxy> implements
     @Override
     public IPage<ProxyInfoVO> queryPage(ProxyPage dto) {
         IPage<ProxyInfoVO> iPage=new Page<>(dto.getPageNum(),dto.getPageSize());
-        IPage<ProxyInfoVO> iPage1=proxyMapper.selectProxyPage(iPage,RoleTypeEnum.PROXY);
+        IPage<ProxyInfoVO> iPage1=proxyMapper.selectProxyPage(iPage,RoleTypeEnum.PROXY,dto.getUserName(),dto.getStatus());
         return iPage1;
     }
 
@@ -63,7 +61,6 @@ public class ProxyServiceImpl extends ServiceImpl<ProxyMapper, Proxy> implements
         customerService.add(account);
         proxy.setCommissionRate(dto.getCommissionRate());
         proxy.setProxyId(account.getId());
-        proxy.setTotalUsers(0);
         proxy.setCreateName(account.getCreateName());
         proxy.setCreateTime(account.getCreateTime());
         save(proxy);
@@ -73,8 +70,8 @@ public class ProxyServiceImpl extends ServiceImpl<ProxyMapper, Proxy> implements
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void baseupdate(ProxyBaseUpdate dto) {
-        Account account=new Account();
+    public void baseUpdate(ProxyBaseUpdate dto) {
+        Account account=customerService.findById(dto.getId());
         Proxy proxy=new Proxy();
         account.setNickName(dto.getNickName());
         account.setContactType(dto.getContactType());
@@ -84,10 +81,9 @@ public class ProxyServiceImpl extends ServiceImpl<ProxyMapper, Proxy> implements
         proxy.setCommissionRate(dto.getCommissionRate());
         UpdateWrapper<Proxy> updateWrapper=new UpdateWrapper<>();
         updateWrapper.lambda()
-                .set(Proxy::getCommissionRate,dto.getCommissionRate())
-                .eq(Proxy::getProxyId,dto.getId());
-        update(updateWrapper);
-        LogTools.addLog("代理管理-编辑代理","编辑了一个代理"+ JSONUtil.toJsonStr(dto),TokenTools.getLoginToken(true));
+                .eq(Proxy::getProxyId,account.getId());
+        update(proxy,updateWrapper);
+        LogTools.addLog("代理管理-编辑代理","修改了一个代理"+ JSONUtil.toJsonStr(dto),TokenTools.getLoginToken(true));
     }
 
     @Override

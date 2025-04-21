@@ -8,6 +8,7 @@ import com.ent.hotchat.pojo.req.systemclient.SystemClientPage;
 import com.ent.hotchat.pojo.req.systemclient.SystemClientUpdate;
 import com.ent.hotchat.pojo.req.systemclient.SystemLogin;
 import com.ent.hotchat.pojo.resp.systemclient.CaptchaCode;
+import com.ent.hotchat.pojo.resp.systemclient.SystemclientVO;
 import com.ent.hotchat.pojo.resp.token.LoginToken;
 import com.ent.hotchat.pojo.resp.token.LoginToken;
 
@@ -18,7 +19,7 @@ public interface SystemClientService extends IService<Account> {
      * @param dto
      * @return
      */
-    IPage<Account> queryPage(SystemClientPage dto);
+    IPage<SystemclientVO> queryPage(SystemClientPage dto);
 
     /**
      * 新增管理员

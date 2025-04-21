@@ -1,6 +1,7 @@
 package com.ent.hotchat.service.serviceimpl;
 
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -18,12 +19,13 @@ import com.ent.hotchat.entity.Anchor;
 import com.ent.hotchat.mapper.AnchorMapper;
 import com.ent.hotchat.pojo.req.anchor.AnchorAdd;
 import com.ent.hotchat.pojo.req.anchor.AnchorBaseUpdate;
-import com.ent.hotchat.pojo.req.anchor.AnchorOnlineStatusUpdate;
 import com.ent.hotchat.pojo.req.anchor.AnchorPage;
 import com.ent.hotchat.pojo.resp.anchor.AnchorInfoVO;
 import com.ent.hotchat.service.AnchorService;
 import com.ent.hotchat.service.CustomerService;
 import com.ent.hotchat.service.EhcacheService;
+import com.ent.hotchat.service.UploadService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class AnchorServiceImpl extends ServiceImpl<AnchorMapper, Anchor> implements AnchorService {
     @Autowired
@@ -43,6 +46,7 @@ public class AnchorServiceImpl extends ServiceImpl<AnchorMapper, Anchor> impleme
 
     @Autowired
     private CustomerService customerService;
+
 
     @Override
     public List<AnchorInfoVO> queryPage() {
@@ -57,10 +61,10 @@ public class AnchorServiceImpl extends ServiceImpl<AnchorMapper, Anchor> impleme
     @Override
     public IPage<AnchorInfoVO> queryAnchorPage(AnchorPage dto) {
         IPage<AnchorInfoVO> iPage=new Page<>(dto.getPageNum(),dto.getPageSize());
-        return anchorMapper.selectFullAnchorPage(iPage,dto);
+        return anchorMapper.selectFullAnchorPage(iPage,RoleTypeEnum.ANCHOR,dto.getUserName(), dto.getNickName(),dto.getStatus(),dto.getOnlineStatus());
     }
 
-    //查询主播列表信息，不分页，查询所有信心
+    //查询主播列表信息，不分页，查询所有信息
     List<AnchorInfoVO> queryList(){
         return anchorMapper.selectAllAnchors(RoleTypeEnum.ANCHOR);
     }
@@ -100,7 +104,7 @@ public class AnchorServiceImpl extends ServiceImpl<AnchorMapper, Anchor> impleme
         account.setPassword(CodeTools.md5AndSalt(dto.getPassword(),account.getSalt()));
         account.setContactType(dto.getContactType());
         account.setContact(dto.getContact());
-        account.setRoleType(RoleTypeEnum.PROXY);
+        account.setRoleType(RoleTypeEnum.ANCHOR);
         account.setStatus(StatusEnum.NORMAL);
         account.setCreateName(TokenTools.getUserName());
         account.setCreateTime(LocalDateTime.now());
@@ -124,7 +128,8 @@ public class AnchorServiceImpl extends ServiceImpl<AnchorMapper, Anchor> impleme
         anchor.setDescription(dto.getDescription());
         anchor.setCommissionRate(dto.getCommissionRate());
         anchor.setOnlineStatus(OnlineStatusEnum.OFFLINE);
-        anchor.setTotalOrders(0);
+        anchor.setCreateTime(account.getCreateTime());
+        anchor.setCreateName(account.getCreateName());
         save(anchor);
         //更新缓存信息
         refresh();
@@ -132,22 +137,48 @@ public class AnchorServiceImpl extends ServiceImpl<AnchorMapper, Anchor> impleme
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void baseupdate(AnchorBaseUpdate dto) {
-
-    }
-
-    @Override
-    public void onlineStatusUpdate(AnchorOnlineStatusUpdate dto) {
-
+        Account account=customerService.findById(dto.getId());
+        account.setNickName(dto.getNickName());
+        account.setContactType(dto.getContactType());
+        account.setContact(dto.getContact());
+        account.setStatus(dto.getStatus());
+        customerService.edit(account);
+        Anchor anchor=new Anchor();
+        anchor.setAvatar(dto.getAvatar());
+        anchor.setVoiceSample(dto.getVoiceSample());
+        anchor.setVoicePriceCny(dto.getVoicePriceCny());
+        anchor.setVoicePriceUsdt(dto.getVoicePriceUsdt());
+        anchor.setVideoPriceCny(dto.getVideoPriceCny());
+        anchor.setVideoPriceUsdt(dto.getVideoPriceUsdt());
+        anchor.setHeight(dto.getHeight());
+        anchor.setWeight(dto.getWeight());
+        anchor.setPersonality(dto.getPersonality());
+        anchor.setAge(dto.getAge());
+        anchor.setEducation(dto.getEducation());
+        anchor.setRegion(dto.getRegion());
+        anchor.setHobbies(dto.getHobbies());
+        anchor.setGoodTopics(dto.getGoodTopics());
+        anchor.setRejectTopics(dto.getRejectTopics());
+        anchor.setDescription(dto.getDescription());
+        anchor.setCommissionRate(dto.getCommissionRate());
+        anchor.setOnlineStatus(OnlineStatusEnum.OFFLINE);
+        UpdateWrapper<Anchor> updateWrapper=new UpdateWrapper<>();
+        updateWrapper.lambda()
+                        .eq(Anchor::getAnchorId,account.getId());
+        update(anchor,updateWrapper);
+        refresh();
+        LogTools.addLog("主播管理-编辑主播","修改了一个主播"+ JSONUtil.toJsonStr(dto),TokenTools.getLoginToken(true));
     }
 
     @Override
     public AnchorInfoVO findByAccount(String account) {
-        return null;
+        return anchorMapper.selectAnchorByAccount(account,RoleTypeEnum.ANCHOR);
     }
 
     @Override
     public AnchorInfoVO findById(Long id) {
-        return null;
+        return anchorMapper.selectAnchorById(id,RoleTypeEnum.ANCHOR);
     }
 }

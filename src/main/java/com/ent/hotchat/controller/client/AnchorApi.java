@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,14 +26,14 @@ public class AnchorApi {
     @Autowired
     private AnchorService anchorService;
 
-    @RequestMapping("/queryAnchorList")
+    @PostMapping("/queryAnchorList")
     @ApiOperation(value = "查询主播列表信息",notes="查询主播列表信息")
     public R<List<AnchorInfoVO>> query(){
         List<AnchorInfoVO> list = anchorService.queryPage();
         return R.ok(list);
     }
 
-    @RequestMapping("/queryAnchorMap")
+    @PostMapping("/queryAnchorMap")
     @ApiOperation(value = "查询主播列表(多人用，仅查询头像和昵称)",notes="查询主播列表(多人用，仅查询头像和昵称)")
     public R<Map> queryMap(){
         Map map = anchorService.queryAnchorList();

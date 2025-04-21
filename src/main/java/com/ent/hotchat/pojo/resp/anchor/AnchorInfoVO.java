@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 public class AnchorInfoVO implements Serializable {
@@ -19,8 +20,6 @@ public class AnchorInfoVO implements Serializable {
     @ApiModelProperty("用户名")
     private String userName;
 
-    @ApiModelProperty("密码")
-    private String password;
 
     @ApiModelProperty("昵称")
     private String nickName;
@@ -30,12 +29,6 @@ public class AnchorInfoVO implements Serializable {
 
     @ApiModelProperty("联系方式信息")
     private String contact;
-
-    @ApiModelProperty("角色")
-    private RoleTypeEnum roleType;
-
-    @ApiModelProperty("状态")
-    private StatusEnum status;
 
     @ApiModelProperty("主播头像")
     private String avatar;
@@ -91,7 +84,13 @@ public class AnchorInfoVO implements Serializable {
     @ApiModelProperty("主播在线状态")
     private OnlineStatusEnum onlineStatus;
 
-    @ApiModelProperty("主播总订单数")
-    private Integer totalOrders;
+    @ApiModelProperty("创建时间")
+    private LocalDateTime createTime;
+
+    @ApiModelProperty("创建人")
+    private String createName;
+
+//    @ApiModelProperty("主播总订单数")
+//    private Integer totalOrders;
 
 }

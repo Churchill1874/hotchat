@@ -62,11 +62,11 @@ public class AnchorAdd implements Serializable {
     @ApiModelProperty(value = "视频价格(USDT)/小时",required = true)
     private BigDecimal videoPriceUsdt=BigDecimal.ZERO;
 
-    @NotBlank(message = "身高不能为空")
+    @NotNull(message = "身高不能为空")
     @ApiModelProperty(value = "主播身高",required = true)
     private Integer height;
 
-    @NotBlank(message = "体重不能为空")
+    @NotNull(message = "体重不能为空")
     @ApiModelProperty(value = "主播体重",required = true)
     private Integer weight;
 

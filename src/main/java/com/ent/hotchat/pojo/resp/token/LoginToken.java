@@ -53,8 +53,6 @@ public class LoginToken implements Serializable {
     @ApiModelProperty("代理/主播佣金比例")
     private BigDecimal commissionRate;
 
-    @ApiModelProperty("下属用户总数")
-    private Integer totalUsers;
 
     @ApiModelProperty("主播对应account.id")
     private Long anchorId;

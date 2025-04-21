@@ -27,7 +27,7 @@ public interface ProxyService extends IService<Proxy> {
      * 修改代理基本信息
      * @param dto
      */
-    void baseupdate(ProxyBaseUpdate dto);
+    void baseUpdate(ProxyBaseUpdate dto);
 
     /**
      * 根据账号查询代理信息

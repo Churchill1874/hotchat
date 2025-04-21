@@ -15,13 +15,13 @@ public class SystemClientUpdate extends Id implements Serializable {
     private static final long serialVersionUID = 1525667436003821504L;
 
 
-    @NotBlank(message = "昵称不能为空")
+
     @Length(max = 50,message = "昵称不能超过50个字符")
-    @ApiModelProperty(value = "昵称",required = true)
+    @ApiModelProperty(value = "昵称")
     private String nickName;
 
-    @NotNull(message = "状态不能为空")
-    @ApiModelProperty(value = "状态",required = true)
+
+    @ApiModelProperty(value = "状态")
     private StatusEnum status;
 
 }

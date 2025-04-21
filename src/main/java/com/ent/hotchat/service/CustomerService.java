@@ -3,9 +3,10 @@ package com.ent.hotchat.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ent.hotchat.entity.Account;
-import com.ent.hotchat.pojo.req.customer.CustomerBaseUpdate;
+import com.ent.hotchat.pojo.req.customer.ClientPasswordUpdate;
 import com.ent.hotchat.pojo.req.customer.CustomerPage;
-import com.ent.hotchat.pojo.req.customer.CustomerStatusUpdate;
+import com.ent.hotchat.pojo.req.customer.CustomerRegister;
+
 import java.time.LocalDateTime;
 
 public interface CustomerService extends IService<Account> {
@@ -15,7 +16,7 @@ public interface CustomerService extends IService<Account> {
      * 用户注册
      * @param dto
      */
-    void register(Account dto);
+    void register(CustomerRegister dto);
 
 
     /**
@@ -33,13 +34,30 @@ public interface CustomerService extends IService<Account> {
     Account findByaccount(String account);
 
     /**
+     * 根据Id查询客户信息
+     * @param id
+     * @return
+     */
+    Account findById(Long id);
+
+    /**
      * 修改客户信息
      * @param dto
      */
     void CustomerUpdate(Account dto);
 
 
-    void CustomerPasswordUpdate(Account dto);
+    /**
+     * 修改密码
+     * @param dto
+     */
+    void customerPasswordUpdate(Account dto);
+
+    /**
+     * 用户修改密码
+     * @param dto
+     */
+    void clientPasswordUpdate(ClientPasswordUpdate dto);
 
     /**
      * 修改最后登录时间
@@ -58,6 +76,5 @@ public interface CustomerService extends IService<Account> {
 
     void edit(Account dto);
 
-    Integer count(Long id);
 
 }

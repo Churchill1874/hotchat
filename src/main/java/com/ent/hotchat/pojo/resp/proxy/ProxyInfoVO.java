@@ -7,6 +7,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 public class ProxyInfoVO implements Serializable {
@@ -18,9 +19,6 @@ public class ProxyInfoVO implements Serializable {
     @ApiModelProperty("用户名")
     private String userName;
 
-    @ApiModelProperty("密码")
-    private String password;
-
     @ApiModelProperty("昵称")
     private String nickName;
 
@@ -30,9 +28,6 @@ public class ProxyInfoVO implements Serializable {
     @ApiModelProperty("联系方式信息")
     private String contact;
 
-    @ApiModelProperty("角色")
-    private RoleTypeEnum roleType;
-
     @ApiModelProperty("状态")
     private StatusEnum status;
 
@@ -41,5 +36,11 @@ public class ProxyInfoVO implements Serializable {
 
     @ApiModelProperty("下属用户总数")
     private Integer totalUsers;
+
+    @ApiModelProperty("创建时间")
+    private LocalDateTime createTime;
+
+    @ApiModelProperty("创建人")
+    private String createName;
 
 }

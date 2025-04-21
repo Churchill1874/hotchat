@@ -68,7 +68,7 @@ mybatis-plus:
       logic-delete-value: 0  # 配置逻辑删除，删除的值为0
       field-strategy: NOT_NULL  # 配置字段策略，忽略字段策略
 
-  type-enums-package: com.ent.codoa.common.constant.enums  # 指定枚举类型所在的包路径
+  type-enums-package: com.ent.hotchat.common.constant.enums  # 指定枚举类型所在的包路径
 
 logging:
   config: classpath:log/logback.xml
@@ -77,3 +77,7 @@ logging:
 init:
   create:
     bot: false  # 创建机器人开关
+
+
+file:
+  upload-dir: /opt/files/audio/

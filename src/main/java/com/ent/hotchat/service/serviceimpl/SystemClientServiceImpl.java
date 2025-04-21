@@ -19,16 +19,21 @@ import com.ent.hotchat.pojo.req.systemclient.SystemLogin;
 import com.ent.hotchat.pojo.resp.anchor.AnchorInfoVO;
 import com.ent.hotchat.pojo.resp.proxy.ProxyInfoVO;
 import com.ent.hotchat.pojo.resp.systemclient.CaptchaCode;
+import com.ent.hotchat.pojo.resp.systemclient.SystemclientVO;
 import com.ent.hotchat.pojo.resp.token.LoginToken;
 import com.ent.hotchat.service.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Service
 public class SystemClientServiceImpl extends ServiceImpl<SystemClientMapper, Account> implements SystemClientService {
     @Autowired
@@ -44,26 +49,55 @@ public class SystemClientServiceImpl extends ServiceImpl<SystemClientMapper, Acc
     private ProxyService proxyService;
 
     @Override
-    public IPage<Account> queryPage(SystemClientPage dto) {
+    public IPage<SystemclientVO> queryPage(SystemClientPage dto) {
         IPage<Account> iPage=new Page<>(dto.getPageNum(),dto.getPageSize());
+        IPage<SystemclientVO> iPage1=new Page<>(dto.getPageNum(),dto.getPageSize());
         QueryWrapper<Account> queryWrapper=new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(StringUtils.isNotBlank(dto.getUserName()),Account::getUserName,dto.getUserName())
-                .eq(dto.getStatus()!=null,Account::getStatus,dto.getStatus());
+                .eq(dto.getStatus()!=null,Account::getStatus,dto.getStatus())
+                .eq(Account::getRoleType,RoleTypeEnum.ADMIN);
         iPage=page(iPage,queryWrapper);
-        return iPage;
+        List<Account> list=iPage.getRecords();
+        List<SystemclientVO> newList=new ArrayList<>();
+        if(CollectionUtils.isEmpty(list)){
+            return iPage1;
+        }
+        for(Account account:list){
+            SystemclientVO systemclientVO=new SystemclientVO();
+            systemclientVO.setUserName(account.getUserName());
+            systemclientVO.setNickName(account.getNickName());
+            systemclientVO.setStatus(account.getStatus());
+            systemclientVO.setCreateTime(account.getCreateTime());
+            systemclientVO.setCreateName(account.getCreateName());
+            newList.add(systemclientVO);
+        }
+
+        iPage1.setPages(iPage.getPages());
+        iPage1.setTotal(iPage.getTotal());
+        iPage1.setRecords(newList);
+        return iPage1;
     }
 
     @Override
     public void add(Account dto) {
         dto.setStatus(StatusEnum.NORMAL);
         dto.setRoleType(RoleTypeEnum.ADMIN);
-        dto.setSalt(GenerateTools.getUUID());
-        dto.setPassword(CodeTools.md5AndSalt(dto.getPassword(),dto.getSalt()));
-        dto.setCreateName(TokenTools.getUserName());
+        if(StringUtils.isBlank(dto.getSalt())){
+            dto.setSalt(GenerateTools.getUUID());
+            dto.setPassword(CodeTools.md5AndSalt(dto.getPassword(),dto.getSalt()));
+        }
         dto.setCreateTime(LocalDateTime.now());
+        if(StringUtils.isBlank(dto.getCreateName())){
+            dto.setCreateName(TokenTools.getUserName());
+        }
+        if(dto.getCreateTime()==null){
+            dto.setCreateTime(LocalDateTime.now());
+        }
         save(dto);
-        LogTools.addLog("系统用户-新增","新增了一个系统用户"+JSONUtil.toJsonStr(dto),TokenTools.getLoginToken(true));
+        if(!"系统初始化".equals(dto.getCreateName())){
+            LogTools.addLog("系统用户-新增","新增了一个系统用户"+JSONUtil.toJsonStr(dto),TokenTools.getLoginToken(true));
+        }
     }
 
     @Override
@@ -131,7 +165,6 @@ public class SystemClientServiceImpl extends ServiceImpl<SystemClientMapper, Acc
                 loginToken.setCommissionRate(BigDecimal.ZERO);
             }
             if(customeraccount.getRoleType()== RoleTypeEnum.PROXY){
-                loginToken.setTotalUsers(proxy.getTotalUsers());
                 //如果是代理就存代理的比例
                 loginToken.setCommissionRate(proxy.getCommissionRate());
             }
@@ -153,7 +186,7 @@ public class SystemClientServiceImpl extends ServiceImpl<SystemClientMapper, Acc
                 loginToken.setRejectTopics(anchor.getRejectTopics());
                 loginToken.setDescription(anchor.getDescription());
                 loginToken.setOnlineStatus(anchor.getOnlineStatus());
-                loginToken.setTotalOrders(anchor.getTotalOrders());
+
                 //主播的比例
                 loginToken.setCommissionRate(anchor.getCommissionRate());
             }

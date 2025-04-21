@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.ent.hotchat.common.constant.enums.RoleTypeEnum;
 import com.ent.hotchat.common.constant.enums.StatusEnum;
 import com.ent.hotchat.entity.base.BaseInfo;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -38,6 +39,7 @@ public class Account extends BaseInfo implements Serializable {
     private RoleTypeEnum roleType;
 
     @ApiModelProperty("最后登录时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastLoginTime;
 
     @ApiModelProperty("账号状态")
