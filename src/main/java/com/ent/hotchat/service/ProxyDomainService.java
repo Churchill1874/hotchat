@@ -3,6 +3,8 @@ package com.ent.hotchat.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ent.hotchat.entity.ProxyDomain;
 
+import java.util.List;
+
 public interface ProxyDomainService extends IService<ProxyDomain> {
     /**
      * 查询匹配的代理域名
@@ -17,4 +19,10 @@ public interface ProxyDomainService extends IService<ProxyDomain> {
      * @return
      */
     Long resolveProxyId(String domain);
+
+    void addDomain(ProxyDomain dto);
+
+    void updateDomain(ProxyDomain dto);
+
+    List<ProxyDomain> queryPage();
 }

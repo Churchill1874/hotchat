@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.ent.hotchat.entity.Account;
 import com.ent.hotchat.pojo.Id;
+import com.ent.hotchat.pojo.req.customer.CustomerPage;
 import com.ent.hotchat.pojo.req.proxy.ProxyAdd;
 import com.ent.hotchat.pojo.req.proxy.ProxyBaseUpdate;
 import com.ent.hotchat.pojo.req.proxy.ProxyPage;
@@ -68,5 +69,12 @@ public class ProxyController {
     public R<ProxyInfoVO> getProxyById(@RequestBody @Valid Id req){
         ProxyInfoVO proxyInfoVO=proxyService.findById(req.getId());
         return R.ok(proxyInfoVO);
+    }
+
+    @PostMapping("/getCustomerByProxyId")
+    @ApiOperation(value = "根据代理Id查询该代理的下线客户",notes = "根据代理Id查询该代理的下线客户")
+    public R<IPage<Account>> getCustomerByProxyId(@RequestBody @Valid CustomerPage req){
+        IPage<Account> ipage=proxyService.queryByProxyId(req);
+        return R.ok(ipage);
     }
 }

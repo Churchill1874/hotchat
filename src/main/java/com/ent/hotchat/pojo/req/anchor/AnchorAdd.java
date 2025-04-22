@@ -1,5 +1,6 @@
 package com.ent.hotchat.pojo.req.anchor;
 
+import com.ent.hotchat.common.constant.enums.OnlineStatusEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
@@ -100,6 +101,10 @@ public class AnchorAdd implements Serializable {
 
     @ApiModelProperty("主播个人描述")
     private String description;
+
+    @NotNull(message = "主播在线状态不能为空")
+    @ApiModelProperty(value = "主播在线状态")
+    private OnlineStatusEnum onlineStatus;
 
     @NotNull(message = "主播佣金比例不能为空")
     @ApiModelProperty(value = "主播佣金比例",required = true)

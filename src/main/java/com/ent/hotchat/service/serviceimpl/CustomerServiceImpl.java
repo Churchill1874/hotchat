@@ -29,8 +29,6 @@ import java.util.Set;
 
 @Service
 public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Account> implements CustomerService {
-    @Autowired
-    private ProxyDomainService proxyDomainService;
 
     @Autowired
     private EhcacheService ehcacheService;
@@ -71,9 +69,9 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Account> im
         String domain = HttpTools.extractDomainFromRequest();
 
         // 2. 解析域名归属
-        String proxyDomain = proxyDomainService.resolveProxyDomain(domain);
+        String proxyDomain = DomainTools.resolveDomain(domain);
         if(StringUtils.isNotBlank(proxyDomain)){
-            account.setProxyId(proxyDomainService.resolveProxyId(domain));
+            account.setProxyId(DomainTools.resolveId(domain));
         }
         account.setProxyDomain(domain);
         save(account);
@@ -97,19 +95,23 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Account> im
         QueryWrapper<Account> queryWrapper=new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(StringUtils.isNotBlank(dto.getUserName()),Account::getUserName,dto.getUserName())
-                .eq(dto.getStatus()!=null,Account::getStatus,dto.getStatus())
+                .eq(dto.getStatus()!=null && dto.getProxyId()!=0,Account::getStatus,dto.getStatus())
+                .eq(dto.getProxyId()!=null && dto.getProxyId()!=0,Account::getProxyId,dto.getProxyId())
                 .eq(Account::getRoleType,RoleTypeEnum.USER);
         iPage=page(iPage,queryWrapper);
         return iPage;
     }
 
     @Override
-    public Account findByaccount(String account) {
+    public Account findByAccount(String account) {
         QueryWrapper<Account> queryWrapper=new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(Account::getUserName,account);
         Account account1=getOne(queryWrapper);
-        return account1;
+        if(account1!=null){
+            return account1;
+        }
+        throw new DataException("该账号不存在");
     }
 
     @Override
@@ -158,14 +160,14 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Account> im
 
     @Override
     public void updateLoginTime(String account) {
-        Account account1 = findByaccount(account);
+        Account account1 = findByAccount(account);
         account1.setLastLoginTime(LocalDateTime.now());
         updateById(account1);
     }
 
     @Override
     public LocalDateTime getLastLoginTime(String account) {
-        return findByaccount(account).getLastLoginTime();
+        return findByAccount(account).getLastLoginTime();
     }
 
 }

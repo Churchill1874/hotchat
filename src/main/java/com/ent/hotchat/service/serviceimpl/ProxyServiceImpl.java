@@ -15,6 +15,7 @@ import com.ent.hotchat.common.tools.TokenTools;
 import com.ent.hotchat.entity.Account;
 import com.ent.hotchat.entity.Proxy;
 import com.ent.hotchat.mapper.ProxyMapper;
+import com.ent.hotchat.pojo.req.customer.CustomerPage;
 import com.ent.hotchat.pojo.req.proxy.ProxyAdd;
 import com.ent.hotchat.pojo.req.proxy.ProxyBaseUpdate;
 import com.ent.hotchat.pojo.req.proxy.ProxyPage;
@@ -41,6 +42,12 @@ public class ProxyServiceImpl extends ServiceImpl<ProxyMapper, Proxy> implements
         IPage<ProxyInfoVO> iPage=new Page<>(dto.getPageNum(),dto.getPageSize());
         IPage<ProxyInfoVO> iPage1=proxyMapper.selectProxyPage(iPage,RoleTypeEnum.PROXY,dto.getUserName(),dto.getStatus());
         return iPage1;
+    }
+
+    @Override
+    public IPage<Account> queryByProxyId(CustomerPage dto) {
+        IPage<Account> iPage = customerService.queryPage(dto);
+        return iPage;
     }
 
     @Override

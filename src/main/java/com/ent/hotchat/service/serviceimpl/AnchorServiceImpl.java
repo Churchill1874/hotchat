@@ -127,7 +127,6 @@ public class AnchorServiceImpl extends ServiceImpl<AnchorMapper, Anchor> impleme
         anchor.setRejectTopics(dto.getRejectTopics());
         anchor.setDescription(dto.getDescription());
         anchor.setCommissionRate(dto.getCommissionRate());
-        anchor.setOnlineStatus(OnlineStatusEnum.OFFLINE);
         anchor.setCreateTime(account.getCreateTime());
         anchor.setCreateName(account.getCreateName());
         save(anchor);

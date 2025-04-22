@@ -1,5 +1,6 @@
 package com.ent.hotchat.pojo.req.customer;
 
+import com.ent.hotchat.common.constant.enums.RoleTypeEnum;
 import com.ent.hotchat.common.constant.enums.StatusEnum;
 import com.ent.hotchat.pojo.BasePage;
 import io.swagger.annotations.ApiModelProperty;
@@ -16,4 +17,9 @@ public class CustomerPage extends BasePage implements Serializable {
 
     @ApiModelProperty("账号状态")
     private StatusEnum status;
+
+    @ApiModelProperty("代理Id")
+    private Long proxyId;
+
+
 }

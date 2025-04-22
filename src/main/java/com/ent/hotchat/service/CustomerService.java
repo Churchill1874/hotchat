@@ -31,7 +31,7 @@ public interface CustomerService extends IService<Account> {
      * @param account
      * @return
      */
-    Account findByaccount(String account);
+    Account findByAccount(String account);
 
     /**
      * 根据Id查询客户信息
