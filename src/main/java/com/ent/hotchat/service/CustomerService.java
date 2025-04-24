@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ent.hotchat.entity.Account;
 import com.ent.hotchat.pojo.req.customer.ClientPasswordUpdate;
+import com.ent.hotchat.pojo.req.customer.CustomerByProxyPage;
 import com.ent.hotchat.pojo.req.customer.CustomerPage;
 import com.ent.hotchat.pojo.req.customer.CustomerRegister;
 
@@ -25,6 +26,13 @@ public interface CustomerService extends IService<Account> {
      * @return
      */
     IPage<Account> queryPage(CustomerPage dto);
+
+    /**
+     * 分页查询代理下线
+     * @param dto
+     * @return
+     */
+    IPage<Account> queryByProxyId(CustomerByProxyPage dto);
 
     /**
      * 根据账号查询客户

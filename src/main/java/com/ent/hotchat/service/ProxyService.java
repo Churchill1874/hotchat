@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ent.hotchat.entity.Account;
 import com.ent.hotchat.entity.Proxy;
+import com.ent.hotchat.pojo.req.customer.CustomerByProxyPage;
 import com.ent.hotchat.pojo.req.customer.CustomerPage;
 import com.ent.hotchat.pojo.req.proxy.ProxyAdd;
 import com.ent.hotchat.pojo.req.proxy.ProxyBaseUpdate;
@@ -19,7 +20,7 @@ public interface ProxyService extends IService<Proxy> {
      */
     IPage<ProxyInfoVO> queryPage(ProxyPage dto);
 
-    IPage<Account> queryByProxyId(CustomerPage dto);
+    IPage<Account> queryByProxyId(CustomerByProxyPage dto);
 
     /**
      * 新增代理

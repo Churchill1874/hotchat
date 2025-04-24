@@ -51,7 +51,7 @@ public interface ProxyMapper extends BaseMapper<Proxy> {
      * @return 代理信息
      */
 
-    @Select("SELECT p.*, a.user_name, a.nick_name, a.contact_type, a.contact, a.role_type, a.status,a.create_time, a.create_name" +
+    @Select("SELECT p.*, a.user_name, a.nick_name, a.contact_type, a.contact, a.role_type, a.status,a.create_time, a.create_name," +
             "(SELECT COUNT(*) FROM account WHERE proxy_id = p.id) AS total_users " +
             "FROM proxy_info p " +
             "JOIN account a ON p.proxy_id = a.id " +
@@ -63,7 +63,7 @@ public interface ProxyMapper extends BaseMapper<Proxy> {
      * @param id 代理id
      * @return 代理信息
      */
-    @Select("SELECT p.*, a.user_name, a.nick_name, a.contact_type, a.contact, a.role_type, a.status,a.create_time, a.create_name " +
+    @Select("SELECT p.*, a.user_name, a.nick_name, a.contact_type, a.contact, a.role_type, a.status,a.create_time, a.create_name," +
             "(SELECT COUNT(*) FROM account WHERE proxy_id = p.id) AS total_users " +
             "FROM proxy_info p " +
             "JOIN account a ON p.proxy_id = a.id " +

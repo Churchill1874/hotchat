@@ -15,11 +15,11 @@ import com.ent.hotchat.common.tools.*;
 import com.ent.hotchat.entity.Account;
 import com.ent.hotchat.mapper.CustomerMapper;
 import com.ent.hotchat.pojo.req.customer.ClientPasswordUpdate;
+import com.ent.hotchat.pojo.req.customer.CustomerByProxyPage;
 import com.ent.hotchat.pojo.req.customer.CustomerPage;
 import com.ent.hotchat.pojo.req.customer.CustomerRegister;
 import com.ent.hotchat.service.CustomerService;
 import com.ent.hotchat.service.EhcacheService;
-import com.ent.hotchat.service.ProxyDomainService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -95,12 +95,23 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Account> im
         QueryWrapper<Account> queryWrapper=new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(StringUtils.isNotBlank(dto.getUserName()),Account::getUserName,dto.getUserName())
-                .eq(dto.getStatus()!=null && dto.getProxyId()!=0,Account::getStatus,dto.getStatus())
-                .eq(dto.getProxyId()!=null && dto.getProxyId()!=0,Account::getProxyId,dto.getProxyId())
+                .eq(dto.getStatus()!=null,Account::getStatus,dto.getStatus())
                 .eq(Account::getRoleType,RoleTypeEnum.USER);
         iPage=page(iPage,queryWrapper);
         return iPage;
     }
+
+    @Override
+    public IPage<Account> queryByProxyId(CustomerByProxyPage dto) {
+        IPage<Account> iPage=new Page<>(dto.getPageNum(),dto.getPageSize());
+        QueryWrapper<Account> queryWrapper=new QueryWrapper<>();
+        queryWrapper.lambda()
+                .eq(Account::getProxyId,dto.getProxyId())
+                .eq(Account::getRoleType,RoleTypeEnum.USER);
+        iPage=page(iPage,queryWrapper);
+        return iPage;
+    }
+
 
     @Override
     public Account findByAccount(String account) {
