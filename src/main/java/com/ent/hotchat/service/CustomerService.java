@@ -9,6 +9,8 @@ import com.ent.hotchat.pojo.req.customer.CustomerPage;
 import com.ent.hotchat.pojo.req.customer.CustomerRegister;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 public interface CustomerService extends IService<Account> {
 
@@ -84,5 +86,6 @@ public interface CustomerService extends IService<Account> {
 
     void edit(Account dto);
 
+    String findByIds(List<Long> anchorIds);
 
 }

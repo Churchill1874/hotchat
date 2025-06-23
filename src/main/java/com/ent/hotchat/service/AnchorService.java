@@ -7,6 +7,7 @@ import com.ent.hotchat.pojo.req.anchor.AnchorBaseUpdate;
 import com.ent.hotchat.pojo.req.anchor.AnchorPage;
 import com.ent.hotchat.pojo.resp.anchor.AnchorInfoVO;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -17,11 +18,6 @@ public interface AnchorService extends IService<Anchor> {
      */
     List<AnchorInfoVO> queryPage();
 
-    /**
-     * 查询主播列表,仅查询头像和昵称
-     * @return
-     */
-    Map<String,String> queryAnchorList();
 
     /**
      * 后端分页查询主播列表
@@ -56,6 +52,12 @@ public interface AnchorService extends IService<Anchor> {
      * @return
      */
     AnchorInfoVO findById(Long id);
+
+    List<AnchorInfoVO> findByIds(String ids);
+
+    BigDecimal getVedioAmounts(String ids,String currency);
+
+    BigDecimal getVoiceAmounts(String ids,String currency);
 
 
 

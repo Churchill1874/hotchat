@@ -1,5 +1,7 @@
 package com.ent.hotchat.config;
 
+
+
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -18,5 +20,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/files/audio/**")
                 .addResourceLocations("file:/opt/files/audio/");
     }
+
 
 }

@@ -41,12 +41,17 @@ public class UploadServiceImpl implements UploadService {
             String filename = UUID.randomUUID().toString() + "." + extension;
             Path fullPath = uploadPath.resolve(filename);
 
-            Files.copy(file.getInputStream(), fullPath, StandardCopyOption.REPLACE_EXISTING);
+            // 使用 transferTo 方法
+            file.transferTo(fullPath.toFile());
+
+            // 关键：设置文件为所有用户可读，防止 nginx 无法访问
+            fullPath.toFile().setReadable(true, false);
             log.info("音频文件已上传成功，路径: {}", fullPath.toAbsolutePath());
-            return "/files/audio/" + filename; // 最终访问路径
+            return "http://119.28.214.138/files/audio/" + filename;
         } catch (IOException e) {
             log.error("音频上传失败: {}", e.getMessage());
             throw new RuntimeException("音频上传失败: " + e.getMessage(), e);
         }
     }
+
 }

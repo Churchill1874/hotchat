@@ -38,7 +38,4 @@ public class ProxyAdd implements Serializable {
     @ApiModelProperty(value = "联系方式信息",required = true)
     private String contact;
 
-    @NotNull(message = "代理佣金比例不能为空")
-    @ApiModelProperty(value = "代理佣金比例",required = true)
-    private BigDecimal commissionRate=BigDecimal.ZERO;
 }

@@ -151,6 +151,7 @@ public class SystemClientServiceImpl extends ServiceImpl<SystemClientMapper, Acc
         ProxyInfoVO proxy=proxyService.findByAccount(account);
         if (customeraccount != null) {
             loginToken = new LoginToken();
+            loginToken.setId(customeraccount.getId());
             loginToken.setUserName(customeraccount.getUserName());
             loginToken.setNickName(customeraccount.getNickName());
             loginToken.setRoleType(customeraccount.getRoleType());
@@ -165,10 +166,12 @@ public class SystemClientServiceImpl extends ServiceImpl<SystemClientMapper, Acc
                 loginToken.setCommissionRate(BigDecimal.ZERO);
             }
             if(customeraccount.getRoleType()== RoleTypeEnum.PROXY){
+                loginToken.setId(proxy.getId());
                 //如果是代理就存代理的比例
                 loginToken.setCommissionRate(proxy.getCommissionRate());
             }
             if (customeraccount.getRoleType()== RoleTypeEnum.ANCHOR){
+                loginToken.setId(anchor.getId());
                 loginToken.setAvatar(anchor.getAvatar());
                 loginToken.setVoiceSample(anchor.getVoiceSample());
                 loginToken.setVoicePriceCny(anchor.getVoicePriceCny());

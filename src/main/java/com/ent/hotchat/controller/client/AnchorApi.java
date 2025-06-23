@@ -33,10 +33,4 @@ public class AnchorApi {
         return R.ok(list);
     }
 
-    @PostMapping("/queryAnchorMap")
-    @ApiOperation(value = "查询主播列表(多人用，仅查询头像和昵称)",notes="查询主播列表(多人用，仅查询头像和昵称)")
-    public R<Map> queryMap(){
-        Map map = anchorService.queryAnchorList();
-        return R.ok(map);
-    }
 }

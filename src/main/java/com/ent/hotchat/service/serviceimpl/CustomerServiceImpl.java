@@ -25,7 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Account> implements CustomerService {
@@ -179,6 +180,16 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Account> im
     @Override
     public LocalDateTime getLastLoginTime(String account) {
         return findByAccount(account).getLastLoginTime();
+    }
+
+    @Override
+    public String findByIds(List<Long> anchorIds) {
+        QueryWrapper<Account> wrapper=new QueryWrapper<>();
+        wrapper.lambda().select(Account::getNickName)
+                .in(Account::getId, anchorIds);
+        List<Object> objects = listObjs(wrapper);
+        List<String> names=objects.stream().map(Object::toString).collect(Collectors.toList());
+        return String.join(",",names);
     }
 
 }

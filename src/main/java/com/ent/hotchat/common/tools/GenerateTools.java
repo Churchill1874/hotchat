@@ -8,16 +8,25 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 生产工具
  */
 @Slf4j
 public class GenerateTools {
+    // 自增序号，最大9999后重置
+    private static final AtomicInteger COUNTER = new AtomicInteger(0);
+
+    // 机器编号（可以根据部署节点分配，如01表示1号机）
+    private static final String MACHINE_ID = "01";
+
     /**
      * 根据当前时间生成编号
      *
@@ -41,6 +50,60 @@ public class GenerateTools {
 
     public static String getUUID() {
         return UUID.randomUUID().toString().replace("-", "");
+    }
+
+
+    /**
+     * 生成订单号方法
+     * @return
+     */
+    public static String generateOrderNumber() {
+        // 时间戳部分
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        String timestamp = sdf.format(new Date());
+
+        // 自增序列，最大9999
+        int count = COUNTER.getAndIncrement();
+        if (count > 9999) {
+            COUNTER.set(0);
+            count = COUNTER.getAndIncrement();
+        }
+
+        // 格式化为4位，不足补0
+        String sequence = String.format("%04d", count);
+
+        // 拼接订单号
+        return "ORD" + timestamp + MACHINE_ID + sequence;
+    }
+
+
+    /**
+     * 创建tokenId
+     *
+     * @return
+     */
+
+    /**
+     * 生成结算单号方法
+     * @return
+     */
+    public static String generateSettleNumber() {
+        // 时间戳部分
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        String timestamp = sdf.format(new Date());
+
+        // 自增序列，最大9999
+        int count = COUNTER.getAndIncrement();
+        if (count > 9999) {
+            COUNTER.set(0);
+            count = COUNTER.getAndIncrement();
+        }
+
+        // 格式化为4位，不足补0
+        String sequence = String.format("%04d", count);
+
+        // 拼接订单号
+        return "SETT" + timestamp + MACHINE_ID + sequence;
     }
 
 

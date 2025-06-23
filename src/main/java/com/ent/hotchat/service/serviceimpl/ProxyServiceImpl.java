@@ -21,22 +21,29 @@ import com.ent.hotchat.pojo.req.proxy.ProxyAdd;
 import com.ent.hotchat.pojo.req.proxy.ProxyBaseUpdate;
 import com.ent.hotchat.pojo.req.proxy.ProxyPage;
 import com.ent.hotchat.pojo.resp.proxy.ProxyInfoVO;
+import com.ent.hotchat.service.CommonConfigService;
 import com.ent.hotchat.service.CustomerService;
 import com.ent.hotchat.service.ProxyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
 @Service
 public class ProxyServiceImpl extends ServiceImpl<ProxyMapper, Proxy> implements ProxyService {
+    final String PROXY_KEY="proxy_rate";
+
     @Autowired
     private CustomerService customerService;
 
     @Autowired
     private ProxyMapper proxyMapper;
+
+    @Autowired
+    private CommonConfigService commonConfigService;
 
     @Override
     public IPage<ProxyInfoVO> queryPage(ProxyPage dto) {
@@ -67,7 +74,8 @@ public class ProxyServiceImpl extends ServiceImpl<ProxyMapper, Proxy> implements
         account.setCreateName(TokenTools.getUserName());
         account.setCreateTime(LocalDateTime.now());
         customerService.add(account);
-        proxy.setCommissionRate(dto.getCommissionRate());
+        BigDecimal commissionRate=new BigDecimal(commonConfigService.getValueByKey(PROXY_KEY));
+        proxy.setCommissionRate(commissionRate);
         proxy.setProxyId(account.getId());
         proxy.setCreateName(account.getCreateName());
         proxy.setCreateTime(account.getCreateTime());

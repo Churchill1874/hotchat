@@ -1,6 +1,8 @@
 package com.ent.hotchat.service.serviceimpl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
@@ -8,6 +10,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ent.hotchat.common.constant.SystemConstant;
 import com.ent.hotchat.common.constant.enums.OnlineStatusEnum;
+import com.ent.hotchat.common.constant.enums.OrderTypeEnum;
 import com.ent.hotchat.common.constant.enums.RoleTypeEnum;
 import com.ent.hotchat.common.constant.enums.StatusEnum;
 import com.ent.hotchat.common.tools.CodeTools;
@@ -21,23 +24,22 @@ import com.ent.hotchat.pojo.req.anchor.AnchorAdd;
 import com.ent.hotchat.pojo.req.anchor.AnchorBaseUpdate;
 import com.ent.hotchat.pojo.req.anchor.AnchorPage;
 import com.ent.hotchat.pojo.resp.anchor.AnchorInfoVO;
-import com.ent.hotchat.service.AnchorService;
-import com.ent.hotchat.service.CustomerService;
-import com.ent.hotchat.service.EhcacheService;
-import com.ent.hotchat.service.UploadService;
+import com.ent.hotchat.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class AnchorServiceImpl extends ServiceImpl<AnchorMapper, Anchor> implements AnchorService {
+    final String CONFIG_KEY="anchor_rate";
+
     @Autowired
     private AnchorMapper anchorMapper;
 
@@ -47,16 +49,15 @@ public class AnchorServiceImpl extends ServiceImpl<AnchorMapper, Anchor> impleme
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private CommonConfigService commonConfigService;
+
 
     @Override
     public List<AnchorInfoVO> queryPage() {
         return ehcacheService.anchorListCache().get(SystemConstant.ANCHOR_LIST);
     }
 
-    @Override
-    public Map<String, String> queryAnchorList() {
-        return ehcacheService.anchorMapCache().get(SystemConstant.ANCHOR_MAP);
-    }
 
     @Override
     public IPage<AnchorInfoVO> queryAnchorPage(AnchorPage dto) {
@@ -69,28 +70,14 @@ public class AnchorServiceImpl extends ServiceImpl<AnchorMapper, Anchor> impleme
         return anchorMapper.selectAllAnchors(RoleTypeEnum.ANCHOR);
     }
 
-    //查询主播列表信息，仅查昵称和头像
-    Map<String,String> queryMap(){
-        List<AnchorInfoVO> list = anchorMapper.selectAllAnchors(RoleTypeEnum.ANCHOR);
-        Map<String,String> map=new HashMap<>();
-        if(CollectionUtils.isEmpty(list)){
-            return map;
-        }
-        for(AnchorInfoVO anchorInfoVO:list){
-            map.put(anchorInfoVO.getNickName(),anchorInfoVO.getAvatar());
-        }
-        return map;
-    }
 
     //刷新缓存
     void refresh(){
         ehcacheService.anchorListCache().remove(SystemConstant.ANCHOR_LIST);
         ehcacheService.anchorMapCache().remove(SystemConstant.ANCHOR_MAP);
         List<AnchorInfoVO> list = queryList();
-        Map<String, String> map = queryMap();
         //将查询出来的主播信息存入缓存
         ehcacheService.anchorListCache().put(SystemConstant.ANCHOR_LIST,list);
-        ehcacheService.anchorMapCache().put(SystemConstant.ANCHOR_MAP,map);
     }
 
     @Override
@@ -126,7 +113,8 @@ public class AnchorServiceImpl extends ServiceImpl<AnchorMapper, Anchor> impleme
         anchor.setGoodTopics(dto.getGoodTopics());
         anchor.setRejectTopics(dto.getRejectTopics());
         anchor.setDescription(dto.getDescription());
-        anchor.setCommissionRate(dto.getCommissionRate());
+        BigDecimal commissionRate=new BigDecimal(commonConfigService.getValueByKey(CONFIG_KEY));
+        anchor.setCommissionRate(commissionRate);
         anchor.setCreateTime(account.getCreateTime());
         anchor.setCreateName(account.getCreateName());
         save(anchor);
@@ -180,4 +168,60 @@ public class AnchorServiceImpl extends ServiceImpl<AnchorMapper, Anchor> impleme
     public AnchorInfoVO findById(Long id) {
         return anchorMapper.selectAnchorById(id,RoleTypeEnum.ANCHOR);
     }
+
+    @Override
+    public List<AnchorInfoVO> findByIds(String ids) {
+        List<String> anchorIds = Arrays.asList(ids.split(","));
+        List<Long> idList=anchorIds.stream().map(Long::parseLong).collect(Collectors.toList());
+        QueryWrapper<Anchor> wrapper=new QueryWrapper<>();
+        wrapper.lambda()
+                .in(Anchor::getAnchorId,idList);
+        List<Anchor> anchorList = list(wrapper);
+        List<AnchorInfoVO> list=new ArrayList<>();
+        for(Anchor anchor:anchorList){
+            AnchorInfoVO anchorInfoVO = BeanUtil.toBean(anchor, AnchorInfoVO.class);
+            anchorInfoVO.setUserName(customerService.findById(anchor.getAnchorId()).getUserName());
+            anchorInfoVO.setNickName(customerService.findById(anchor.getAnchorId()).getNickName());
+            list.add(anchorInfoVO);
+        }
+        return list;
+    }
+
+    @Override
+    public BigDecimal getVedioAmounts(String ids, String currency) {
+        List<String> anchorIds = Arrays.asList(ids.split(","));
+        List<Long> idList=anchorIds.stream().map(Long::parseLong).collect(Collectors.toList());
+        QueryWrapper<Anchor> wrapper=new QueryWrapper<>();
+        wrapper.lambda()
+                .in(Anchor::getAnchorId,idList);
+        List<Anchor> anchorList = list(wrapper);
+        BigDecimal amount=BigDecimal.ZERO;
+        for(Anchor anchor:anchorList){
+            if (currency.equals("CNY")){
+                amount.add(anchor.getVideoPriceCny());
+            }
+            amount.add(anchor.getVideoPriceUsdt());
+        }
+        return amount;
+    }
+
+    @Override
+    public BigDecimal getVoiceAmounts(String ids, String currency) {
+        List<String> anchorIds = Arrays.asList(ids.split(","));
+        List<Long> idList=anchorIds.stream().map(Long::parseLong).collect(Collectors.toList());
+        QueryWrapper<Anchor> wrapper=new QueryWrapper<>();
+        wrapper.lambda()
+                .in(Anchor::getAnchorId,idList);
+        List<Anchor> anchorList = list(wrapper);
+        BigDecimal amount=BigDecimal.ZERO;
+        for(Anchor anchor:anchorList){
+            if (currency.equals("CNY")){
+                amount.add(anchor.getVoicePriceCny());
+            }
+            amount.add(anchor.getVoicePriceUsdt());
+        }
+        return amount;
+    }
+
+
 }

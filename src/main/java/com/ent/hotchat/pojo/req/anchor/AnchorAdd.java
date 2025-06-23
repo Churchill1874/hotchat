@@ -106,7 +106,4 @@ public class AnchorAdd implements Serializable {
     @ApiModelProperty(value = "主播在线状态")
     private OnlineStatusEnum onlineStatus;
 
-    @NotNull(message = "主播佣金比例不能为空")
-    @ApiModelProperty(value = "主播佣金比例",required = true)
-    private BigDecimal commissionRate=BigDecimal.ZERO;
 }
